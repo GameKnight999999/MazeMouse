@@ -9,9 +9,6 @@ FPS = 60
 running = True
 clock = events.Clock()
 
-# Приветствие. Его нужно удалить
-greetings()
-
 while running:
     for event in events.get_event_queue():
         if tasks.handle_event(event):
