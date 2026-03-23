@@ -1,9 +1,11 @@
 import settings
 from maze.mice import Mouse2
+from maze.cheese import Cheese
 from maze.tiles import Room_tile, Wall_tile
 
 maze = []
 mouse = None
+cheese = None
 ##########################################################
 # Грузим карту
 with open(settings.map_file) as f:
@@ -27,6 +29,9 @@ def draw():
 
     if mouse is not None:
         mouse.draw()
+    
+    if cheese is not None:
+        cheese.draw()
 
 
 # Получаем тайл по координатам лабиринта
@@ -48,3 +53,8 @@ def update(delta_time):
 def add_mouse(x, y):
     global mouse
     mouse = Mouse2(x, y)
+
+
+def add_cheese(x, y):
+    global cheese
+    cheese = Cheese(x, y)
