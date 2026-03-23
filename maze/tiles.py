@@ -32,7 +32,7 @@ class Tile:
 class Wall_tile(Tile):
     def __init__(self, row, column):
         super().__init__("1", row, column)
-        self.image = graphics.load_image("images/wall.bmp")
+        self.image = graphics.load_image("images/wall.png")
 
     def draw(self):
         graphics.draw_image(self.image, self.column, self.row)
