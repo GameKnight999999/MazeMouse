@@ -19,7 +19,10 @@ while running:
         elif event.type == events.MOUSEWHEEL:
             mouse_pos = events.get_pos()
             pos = graphics.screen2mazep(*mouse_pos)
+
             settings.tile_size *= 1 + .1 * event.y
+            settings.tile_size = max(graphics.screen.get_width() / Maze.size[0], graphics.screen.get_height() / Maze.size[1], settings.tile_size)
+            
             pos_new = graphics.screen2mazep(*mouse_pos)
             settings.view_left_top[0] += pos_new[0] - pos[0]
             settings.view_left_top[1] += pos_new[1] - pos[1]

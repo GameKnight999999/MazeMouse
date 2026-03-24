@@ -1,5 +1,5 @@
 import pygame
-from pygame.constants import *
+from pygame.constants import * # pyright: ignore[reportWildcardImportFromLibrary]
 
 Clock = pygame.time.Clock
 
