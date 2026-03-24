@@ -13,7 +13,7 @@ import settings
 class Mouse(ABC):
     def __init__(self, x, y, dir = 0):
         self.x, self.y = x, y
-        self.size = 1 / 20 # доля тайла, тайлы 1x1
+        self.size = 1 / 4 # доля тайла, тайлы 1x1
         self.speed = settings.MIN_MOUSE_SPEED + random.random() * (settings.MAX_MOUSE_SPEED * settings.MIN_MOUSE_SPEED) # тайлов в секунду
         self.dir = dir
     
