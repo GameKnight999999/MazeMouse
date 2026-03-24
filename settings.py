@@ -4,6 +4,7 @@ map_file = "map.txt"
 
 MAX_MOUSE_SPEED = 3
 MIN_MOUSE_SPEED = .3
+MAZE_CHUNK_SIZE = 25
 CAM_SPEED = .5
 
 

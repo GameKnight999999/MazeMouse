@@ -5,22 +5,10 @@ from maze.cheese import Cheese
 from maze.tiles import Room_tile, Wall_tile
 from maze.tiles import Tile
 
-maze = []
+maze = dict()
+sets = dict()
 mice = []
 cheese = None
-##########################################################
-# Грузим карту
-with open(settings.map_file) as f:
-    map_txt = f.readlines()
-# Строим карту из настоящих объектных тайлов
-for row, line in enumerate(map_txt):
-    maze.append([])
-    for column, tile_type in enumerate(line[:-1]):
-        if tile_type == "0":
-            maze[row].append(Room_tile(row, column))
-        else:
-            maze[row].append(Wall_tile(row, column))
-###########################################################
 
 size = (len(maze), len(maze[0]))
 
