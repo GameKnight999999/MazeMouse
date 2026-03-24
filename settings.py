@@ -1,7 +1,9 @@
-tile_size = [100, 100]
-view_left_top = [30, 40]
+tile_size = 100
+view_left_top = [0, 0]
 map_file = "map.txt"
-task_mode = True
+
+MAX_MOUSE_SPEED = 3
+CAM_SPEED = 10
 
 
 

@@ -1,10 +1,10 @@
 import settings
-from maze.mice import Mouse2
+from maze.mice import SmartMouse
 from maze.cheese import Cheese
 from maze.tiles import Room_tile, Wall_tile
 
 maze = []
-mouse = None
+mice = []
 cheese = None
 ##########################################################
 # Грузим карту
@@ -20,6 +20,7 @@ for row, line in enumerate(map_txt):
             maze[row].append(Wall_tile(row, column))
 ###########################################################
 
+size = (len(maze), len(maze[0]))
 
 # Рисуем все: и тайлы и мышей
 def draw():
@@ -27,7 +28,7 @@ def draw():
         for column in range(len(maze[row])):
             maze[row][column].draw()
 
-    if mouse is not None:
+    for mouse in mice:
         mouse.draw()
     
     if cheese is not None:
@@ -46,15 +47,18 @@ def get_tile(x, y):
 # двигаем, все что движется
 # вызов этой функции постоянно в цикле в main.py
 def update(delta_time):
-    if mouse is not None:
+    for mouse in mice:
         mouse.update(delta_time)
 
 
 def add_mouse(x, y):
-    global mouse
-    mouse = Mouse2(x, y)
+    global mice
+    mice.append(SmartMouse(x, y))
 
 
-def add_cheese(x, y):
+def put_cheese(x, y):
     global cheese
+    x, y = int(x), int(y)
     cheese = Cheese(x, y)
+    for mouse in mice:
+        mouse.goto_cheese(x, y)

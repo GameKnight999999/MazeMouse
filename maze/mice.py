@@ -3,13 +3,15 @@ from maze.directions import directions
 from maze.tiles import Wall_tile, Room_tile
 from ui import graphics
 from abc import ABC, abstractmethod
+import random
+import settings
 
 
 class Mouse(ABC):
     def __init__(self, x, y, dir = 0):
         self.x, self.y = x, y
         self.size = 1 / 20 # доля тайла, тайлы 1x1
-        self.speed = 1 # тайлов в секунду
+        self.speed = random.random() * settings.MAX_MOUSE_SPEED # тайлов в секунду
         self.dir = dir
 
 
@@ -48,14 +50,19 @@ class SmartMouse(Mouse):
         if self.path is None:
             return
         cur_tile = Maze.get_tile(self.x, self.y)
-        if cur_tile.column == self.target[0] and cur_tile.row == self.target[1]:
-            self.path = None
         dx, dy = directions[self.dir]
         self.x += dx * self.speed * delta_time
         self.y += dy * self.speed * delta_time
         if cur_tile == self.next and cur_tile.dist_to_border(self.x, self.y, self.dir) < 0.5:
-            self.dir = next(self.path, self.dir)
-            self.next = cur_tile.get_neighb_tile(self.dir)
+            if cur_tile.column == self.target[0] and cur_tile.row == self.target[1]:
+                self.path = None
+                new_cheese = None
+                while not isinstance(new_cheese, Room_tile):
+                    new_cheese = random.choice(random.choice(Maze.maze))
+                Maze.put_cheese(new_cheese.column, new_cheese.row)
+            else:
+                self.dir = next(self.path, self.dir)
+                self.next = cur_tile.get_neighb_tile(self.dir)
     
 
     def __find_path(self):
