@@ -1,5 +1,5 @@
 import settings
-from maze.mice import SmartMouse
+from maze.mice import BFSMouse
 from maze.cheese import Cheese
 from maze.tiles import Room_tile, Wall_tile
 
@@ -53,7 +53,7 @@ def update(delta_time):
 
 def add_mouse(x, y):
     global mice
-    mice.append(SmartMouse(x, y))
+    mice.append(BFSMouse(x, y))
 
 
 def put_cheese(x, y):
