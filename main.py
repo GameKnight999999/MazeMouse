@@ -16,7 +16,8 @@ while running:
                 Maze.add_mouse(*graphics.screen2mazep(*event.pos))
             elif event.button == 3:
                 Maze.put_cheese(*graphics.screen2mazep(*event.pos))
-        
+        elif event.type == events.MOUSEWHEEL:
+            settings.tile_size *= 1 + .1 * event.y
     
     pressed = events.get_pressed()
     if pressed[events.K_RIGHT]:
@@ -27,8 +28,8 @@ while running:
         settings.view_left_top[1] -= settings.CAM_SPEED
     if pressed[events.K_UP]:
         settings.view_left_top[1] += settings.CAM_SPEED
-    settings.view_left_top[0] = min(max(settings.view_left_top[0], graphics.screen.get_width() - graphics.maze2screens(Maze.size[0])), 0)
-    settings.view_left_top[1] = min(max(settings.view_left_top[1], graphics.screen.get_height() - graphics.maze2screens(Maze.size[1])), 0)
+    settings.view_left_top[0] = min(max(settings.view_left_top[0], graphics.screen2mazes(graphics.screen.get_width()) - Maze.size[0]), 0)
+    settings.view_left_top[1] = min(max(settings.view_left_top[1], graphics.screen2mazes(graphics.screen.get_height()) - Maze.size[1]), 0)
 
     graphics.fill("black")
     # рисуем лабиринт
