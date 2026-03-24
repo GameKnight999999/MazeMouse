@@ -2,18 +2,22 @@ from maze import Maze
 from maze.directions import directions
 from maze.tiles import Wall_tile, Room_tile
 from ui import graphics
+from abc import ABC, abstractmethod
 
 
-class Mouse:
+class Mouse(ABC):
     def __init__(self, x, y, dir = 0):
         self.x, self.y = x, y
         self.size = 1 / 20 # доля тайла, тайлы 1x1
         self.speed = 1 # тайлов в секунду
         self.dir = dir
 
+
     def draw(self):
         graphics.draw_circle("yellow", self.x, self.y, self.size)
 
+
+    @abstractmethod
     def update(self, delta_time):
         # Ничего не умеет вообще
         pass
@@ -72,9 +76,7 @@ class SmartMouse(Mouse):
                         return res
             return None
         
-        print("Starting DFS...")
         rev_path = dfs(Maze.get_tile(self.x, self.y))
-        print(f"DFS done. Result: {rev_path}")
         if rev_path is None:
             self.path = rev_path
         else:
