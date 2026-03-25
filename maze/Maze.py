@@ -4,18 +4,20 @@ from maze.mice import SmartMouse
 from maze.cheese import Cheese
 from maze.tiles import Room_tile, Wall_tile
 from maze.tiles import Tile
+from maze.generator import gen
 
 maze = dict()
 sets = dict()
 mice = []
 cheese = None
 
-size = (len(maze), len(maze[0]))
 
 # Рисуем все: и тайлы и мышей
-def draw():
-    for row in range(len(maze)):
-        for column in range(len(maze[row])):
+def draw(x1, y1, x2, y2):
+    x1, y1 = int(x1) - settings.MARGIN, int(y1) - settings.MARGIN
+    x2, y2 = int(x2) + settings.MARGIN, int(y2) + settings.MARGIN
+    for row in range(y1, y2 + 1):
+        for column in range(x1, x2 + 1):
             maze[row][column].draw()
 
     for mouse in mice:
