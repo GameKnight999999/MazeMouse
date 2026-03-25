@@ -1,6 +1,7 @@
 from maze import Maze
 from maze.tiles import Room_tile
 from maze.tiles import Wall_tile
+from maze.directions import directions
 import random
 
 
@@ -32,49 +33,36 @@ def wall2cell(x):
     return x * 2
 
 
-def gen_sets(x1, y1, x2, y2):
+def gen_cells(x1, y1, x2, y2):
     
-    sets = dict()
+    cells = []
 
     for column in range(x1, x2):
         for row in range(y1, y2):
-            sets[(column, row)] = Set()
+            if (column, row) not in sets:
+                sets[(column, row)] = Set()
+                cells.append((column, row))
     
-    return sets
+    return cells
 
 
-def gen_walls(x1, y1, x2, y2):
+def gen_walls(cells):
     
-    walls = []
+    walls = set()
 
-    # Generating inner walls of an area
-    for column in range(x1, x2):
-        for row in range(y1, y2):
-            if column > x1:
-                walls.append(((column - 1, row), (column, row)))
-            if row > y1:
-                walls.append(((column, row - 1), (column, row)))
+    for cell in cells:
+        for dir in directions:
+            if (cell[0] + dir[0], cell[1] + dir[1]) in sets:
+                walls.add((cell, (cell[0] + dir[0], cell[1] + dir[1])))
     
-    # Checking for outer walls in the border cells
-    for column in range(x1, x2):
-        if (column, y1 - 1) in Maze.maze:
-            walls.append(((column, y1 - 1), (column, y1)))
-        if (column, y2 + 1) in Maze.maze:
-            walls.append(((column, y2), (column, y2 + 1)))
-    for row in range(y1, y2):
-        if (x1 - 1, row) in Maze.maze:
-            walls.append(((x1 - 1, row), (x1, row)))
-        if (x2 + 1, row) in Maze.maze:
-            walls.append(((x2, row), (x2 + 1, row)))
-    
-    return walls
+    return list(walls)
 
 
 def gen(x1, y1, x2, y2):
     
     wall_x1, wall_x2, wall_y1, wall_y2 = cell2wall(x1), cell2wall(y1), cell2wall(x2), cell2wall(y2)
-    sets = gen_sets(wall_x1, wall_y1, wall_x2, wall_y2)
-    walls = gen_walls(wall_x1, wall_y1, wall_x2, wall_y2)
+    cells = gen_cells(wall_x1, wall_y1, wall_x2, wall_y2)
+    walls = gen_walls(cells)
     random.shuffle(walls)
 
     # Generating default cell preset
@@ -92,3 +80,6 @@ def gen(x1, y1, x2, y2):
             row = (wall2cell(wall[0][1]) + wall2cell(wall[1][1])) // 2
             Maze.maze[(column, row)] = Room_tile(row, column)
             _ = sets[wall[0]] + sets[wall[1]]
+
+
+sets = dict()
