@@ -69,11 +69,14 @@ def gen(x1, y1, x2, y2):
     for cell in cells:
         column, row = wall2cell(cell[0]), wall2cell(cell[1])
         Maze.maze[(column, row)] = Room_tile(row, column)
+        Maze.maze[(column - 1, row - 1)] = Wall_tile(row - 1, column - 1)
     
     # Running Kruskal's algorythm
     for wall in walls:
         column = (wall2cell(wall[0][0]) + wall2cell(wall[1][0])) // 2
         row = (wall2cell(wall[0][1]) + wall2cell(wall[1][1])) // 2
+        if (column % 2) ^ (row % 2):
+            print(column, row)
         if sets[wall[0]] != sets[wall[1]]:
             Maze.maze[(column, row)] = Room_tile(row, column)
             _ = sets[wall[0]] + sets[wall[1]]

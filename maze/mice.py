@@ -53,7 +53,7 @@ class SmartMouse(Mouse, ABC):
                 self.path = None
                 new_cheese = None
                 while not isinstance(new_cheese, Room_tile):
-                    new_cheese = random.choice(random.choice(Maze.maze))
+                    new_cheese = random.choice(Maze.maze)
                 Maze.put_cheese(new_cheese.column, new_cheese.row)
             else:
                 self.dir = next(self.path, self.dir)
