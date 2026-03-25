@@ -1,4 +1,3 @@
-import maze.Maze
 from maze import Maze
 from maze.directions import directions
 from ui import graphics
@@ -35,8 +34,7 @@ class Wall_tile(Tile):
 
     def __init__(self, row: int, column: int):
         super().__init__("1", row, column)
-        self.image = graphics.load_image("images/wall.png")
-
+    
     def draw(self):
         graphics.draw_image(self.image, self.column, self.row)
 

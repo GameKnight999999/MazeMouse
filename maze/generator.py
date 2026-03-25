@@ -60,26 +60,25 @@ def gen_walls(cells):
 
 def gen(x1, y1, x2, y2):
     
-    wall_x1, wall_x2, wall_y1, wall_y2 = cell2wall(x1), cell2wall(y1), cell2wall(x2), cell2wall(y2)
+    wall_x1, wall_y1, wall_x2, wall_y2 = cell2wall(x1), cell2wall(y1), cell2wall(x2), cell2wall(y2)
     cells = gen_cells(wall_x1, wall_y1, wall_x2, wall_y2)
     walls = gen_walls(cells)
     random.shuffle(walls)
 
     # Generating default cell preset
-    for column in range(x1, x2):
-        for row in range(y1, y2):
-            if column % 2 or row % 2:
-                Maze.maze[(column, row)] = Wall_tile(row, column)
-            else:
-                Maze.maze[(column, row)] = Room_tile(row, column)
+    for cell in cells:
+        column, row = wall2cell(cell[0]), wall2cell(cell[1])
+        Maze.maze[(column, row)] = Room_tile(row, column)
     
     # Running Kruskal's algorythm
     for wall in walls:
+        column = (wall2cell(wall[0][0]) + wall2cell(wall[1][0])) // 2
+        row = (wall2cell(wall[0][1]) + wall2cell(wall[1][1])) // 2
         if sets[wall[0]] != sets[wall[1]]:
-            column = (wall2cell(wall[0][0]) + wall2cell(wall[1][0])) // 2
-            row = (wall2cell(wall[0][1]) + wall2cell(wall[1][1])) // 2
             Maze.maze[(column, row)] = Room_tile(row, column)
             _ = sets[wall[0]] + sets[wall[1]]
+        else:
+            Maze.maze[(column, row)] = Wall_tile(row, column)
 
 
 sets = dict()
