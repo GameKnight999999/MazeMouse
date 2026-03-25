@@ -2,47 +2,50 @@ from maze import Maze
 from maze.directions import directions
 from maze.tiles import Wall_tile
 from maze.tiles import Room_tile
+from maze.tiles import Tile
 from ui import graphics
 from abc import ABC
 from abc import abstractmethod
 from collections import deque
+from typing import Iterable
 import random
 import settings
 
 
 class Mouse(ABC):
-    def __init__(self, x, y, dir = 0):
-        self.x, self.y = x, y
-        self.size = 1 / 4 # доля тайла, тайлы 1x1
-        self.speed = settings.MIN_MOUSE_SPEED + random.random() * (settings.MAX_MOUSE_SPEED * settings.MIN_MOUSE_SPEED) # тайлов в секунду
-        self.dir = dir
+    def __init__(self, x: float, y: float, dir: int = 0) -> None:
+        self.x: float = x
+        self.y: float = y
+        self.size: float = 1 / 4 # доля тайла, тайлы 1x1
+        self.speed: float = settings.MIN_MOUSE_SPEED + random.random() * (settings.MAX_MOUSE_SPEED * settings.MIN_MOUSE_SPEED) # тайлов в секунду
+        self.dir: int = dir
     
 
     @property
-    def cur_tile(self):
+    def cur_tile(self) -> Tile:
         return Maze.get_tile(self.x, self.y)
 
 
-    def draw(self):
+    def draw(self) -> None:
         graphics.draw_circle("yellow", self.x, self.y, self.size)
 
 
     @abstractmethod
-    def update(self, delta_time):
+    def update(self, delta_time: float) -> None:
         # Ничего не умеет вообще
         pass
 
 
 class SmartMouse(Mouse, ABC):
-    def __init__(self, x, y, dir=0):
+    def __init__(self, x: float, y: float, dir: int = 0):
         super().__init__(x, y, dir)
-        self.target = None
-        self.path = None
-        self.next = self.cur_tile
+        self.target: tuple[int, int] | None = None
+        self.path: Iterable[int] | None = None
+        self.next: Tile = self.cur_tile
 
 
-    def update(self, delta_time):
-        if self.path is None:
+    def update(self, delta_time: float) -> None:
+        if self.path is None or self.target is None:
             return
         
         if self.cur_tile == self.next and self.cur_tile.dist_to_border(self.x, self.y, self.dir) < 0.5:
@@ -62,11 +65,11 @@ class SmartMouse(Mouse, ABC):
     
 
     @abstractmethod
-    def find_path(self):
+    def find_path(self) -> None:
         pass
 
 
-    def goto_cheese(self, x_cheese, y_cheese):
+    def goto_cheese(self, x_cheese: int, y_cheese: int) -> None:
         self.target = (x_cheese, y_cheese)
         self.next = self.cur_tile
         self.find_path()
@@ -74,13 +77,13 @@ class SmartMouse(Mouse, ABC):
 
 # немного интеллекта
 class Mouse2(Mouse):
-    def update(self, delta_time):
+    def update(self, delta_time: float):
         dx, dy = directions[self.dir]
         self.x += dx * self.speed * delta_time
         self.y += dy * self.speed * delta_time
         next_tile = self.cur_tile.get_neighb_tile(self.dir)
-        if self.cur_tile.dist_to_border(self.x, self.y, self.dir) < 0.2 and (
-                next_tile is None or isinstance(next_tile, Wall_tile)):
+        if self.cur_tile.dist_to_border(self.x, self.y, self.dir) < 0.2 and \
+                isinstance(next_tile, Wall_tile):
             self.dir = (self.dir - 1) % 4
 
 
@@ -89,8 +92,8 @@ class DFSMouse(SmartMouse):
         if self.target is None:
             return
         
-        visited = set()
-        def dfs(tile):
+        visited: set[Tile] = set()
+        def dfs(tile: Tile) -> list[int] | None:
             visited.add(tile)
             if tile.column == self.target[0] and tile.row == self.target[1]:
                 return []
@@ -111,12 +114,12 @@ class DFSMouse(SmartMouse):
 
 
 class BFSMouse(SmartMouse):
-    def find_path(self):
+    def find_path(self) -> None:
         if self.target is None:
             return
         
-        queue = deque()
-        visited = set()
+        queue: deque[tuple[Tile, list[int]]] = deque()
+        visited: set[Tile] = set()
         queue.append((self.cur_tile, []))
         while queue:
             tile, path = queue.popleft()

@@ -1,7 +1,9 @@
 import settings
 from maze.mice import BFSMouse
+from maze.mice import SmartMouse
 from maze.cheese import Cheese
 from maze.tiles import Room_tile, Wall_tile
+from maze.tiles import Tile
 
 maze = []
 mice = []
@@ -36,27 +38,23 @@ def draw():
 
 
 # Получаем тайл по координатам лабиринта
-def get_tile(x, y):
-    if 0 <= y < len(maze) and 0 <= x < len(maze[int(y)]):
-        tile_column, tile_row = int(x), int(y)
-        return maze[tile_row][tile_column]
-    else:
-        return None
+def get_tile(x: float, y: float):
+    return maze.get((int(x), int(y)), Missing_tile(int(y), int(x)))
 
 
 # двигаем, все что движется
 # вызов этой функции постоянно в цикле в main.py
-def update(delta_time):
+def update(delta_time: float):
     for mouse in mice:
         mouse.update(delta_time)
 
 
-def add_mouse(x, y):
+def add_mouse(x: float, y: float):
     global mice
     mice.append(BFSMouse(x, y))
 
 
-def put_cheese(x, y):
+def put_cheese(x: float, y: float):
     global cheese
     x, y = int(x), int(y)
     cheese = Cheese(x, y)

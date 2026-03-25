@@ -2,10 +2,11 @@ import maze.Maze
 from maze import Maze
 from maze.directions import directions
 from ui import graphics
+from abc import ABC
 
 
-class Tile:
-    def __init__(self, tile_type, row, column):
+class Tile(ABC):
+    def __init__(self, tile_type: str, row: int, column: int):
         self.tile_type = tile_type
         self.row = row
         self.column = column
@@ -13,11 +14,11 @@ class Tile:
     def draw(self):
        pass
 
-    def get_neighb_tile(self, dir_n):
+    def get_neighb_tile(self, dir_n: int) -> "Tile":
         dx, dy = directions[dir_n]
         return Maze.get_tile(self.column + 0.5 + dx, self.row + 0.5 + dy)
 
-    def dist_to_border(self, x, y, dir_n):
+    def dist_to_border(self, x: float, y: float, dir_n: int):
         x -= int(x)
         y -= int(y)
         if dir_n == 0:
@@ -30,7 +31,9 @@ class Tile:
 
 
 class Wall_tile(Tile):
-    def __init__(self, row, column):
+    image = graphics.load_image("images/wall.png")
+
+    def __init__(self, row: int, column: int):
         super().__init__("1", row, column)
         self.image = graphics.load_image("images/wall.png")
 
@@ -39,7 +42,15 @@ class Wall_tile(Tile):
 
 
 class Room_tile(Tile):
-    def __init__(self, row, column):
+    def __init__(self, row: int, column: int):
         super().__init__("0", row, column)
 
-# пустая комната не нуждается в рисовании
+
+class Missing_tile(Tile):
+    image = graphics.load_image("images/missing.png")
+
+    def __init__(self, row: int, column: int):
+        super().__init__("-1", row, column)
+    
+    def draw(self):
+        graphics.draw_image(self.image, self.column, self.row)
