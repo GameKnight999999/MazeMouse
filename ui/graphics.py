@@ -4,7 +4,7 @@ import settings
 from ui import screen
 
 Image = pygame.Surface
-Color = pygame.Color
+Color = pygame.Color | str | tuple[int, int, int]
 flip = pygame.display.flip
 
 

@@ -10,7 +10,7 @@ class Set:
         self.next = self
     
 
-    def __add__(self, other):
+    def __add__(self, other: "Set"):
         self.next = other
     
 
@@ -25,17 +25,17 @@ class Set:
         return self.next == value.next
 
 
-def cell2wall(x):
+def cell2wall(x: int):
     return (x + 1) // 2
 
 
-def wall2cell(x):
+def wall2cell(x: int):
     return x * 2
 
 
-def gen_cells(x1, y1, x2, y2):
+def gen_cells(x1: int, y1: int, x2: int, y2: int):
     
-    cells = []
+    cells: list[tuple[int, int]] = []
 
     for column in range(x1, x2):
         for row in range(y1, y2):
@@ -46,9 +46,9 @@ def gen_cells(x1, y1, x2, y2):
     return cells
 
 
-def gen_walls(cells):
+def gen_walls(cells: list[tuple[int, int]]):
     
-    walls = set()
+    walls: set[tuple[tuple[int, int], tuple[int, int]]] = set()
 
     for cell in cells:
         for dir in directions:
@@ -58,7 +58,7 @@ def gen_walls(cells):
     return list(walls)
 
 
-def gen(x1, y1, x2, y2):
+def gen(x1: int, y1: int, x2: int, y2: int):
     
     wall_x1, wall_y1, wall_x2, wall_y2 = cell2wall(x1), cell2wall(y1), cell2wall(x2), cell2wall(y2)
     cells = gen_cells(wall_x1, wall_y1, wall_x2, wall_y2)
@@ -84,4 +84,4 @@ def gen(x1, y1, x2, y2):
             Maze.maze[(column, row)] = Wall_tile(row, column)
 
 
-sets = dict()
+sets: dict[tuple[int, int], Set] = dict()

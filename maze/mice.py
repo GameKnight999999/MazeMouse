@@ -7,7 +7,7 @@ from ui import graphics
 from abc import ABC
 from abc import abstractmethod
 from collections import deque
-from typing import Iterable
+from typing import Iterator
 import random
 import settings
 
@@ -40,7 +40,7 @@ class SmartMouse(Mouse, ABC):
     def __init__(self, x: float, y: float, dir: int = 0):
         super().__init__(x, y, dir)
         self.target: tuple[int, int] | None = None
-        self.path: Iterable[int] | None = None
+        self.path: Iterator[int] | None = None
         self.next: Tile = self.cur_tile
 
 
@@ -52,9 +52,10 @@ class SmartMouse(Mouse, ABC):
             if self.cur_tile.column == self.target[0] and self.cur_tile.row == self.target[1]:
                 self.path = None
                 new_cheese = None
-                while not isinstance(new_cheese, Room_tile):
-                    new_cheese = random.choice(Maze.maze)
-                Maze.put_cheese(new_cheese.column, new_cheese.row)
+                while new_cheese is None or not isinstance(Maze.get_tile(*new_cheese), Room_tile):
+                    new_cheese = random.randrange(self.cur_tile.column - settings.CHEESE_RANGE, self.cur_tile.column + settings.CHEESE_RANGE), \
+                                 random.randrange(self.cur_tile.row - settings.CHEESE_RANGE, self.cur_tile.row + settings.CHEESE_RANGE)
+                Maze.put_cheese(*new_cheese)
             else:
                 self.dir = next(self.path, self.dir)
                 self.next = self.cur_tile.get_neighb_tile(self.dir)
@@ -95,7 +96,7 @@ class DFSMouse(SmartMouse):
         visited: set[Tile] = set()
         def dfs(tile: Tile) -> list[int] | None:
             visited.add(tile)
-            if tile.column == self.target[0] and tile.row == self.target[1]:
+            if tile.column == self.target[0] and tile.row == self.target[1]: # pyright: ignore[reportOptionalSubscript]
                 return []
             for dir in range(len(directions)):
                 next_tile = tile.get_neighb_tile(dir)

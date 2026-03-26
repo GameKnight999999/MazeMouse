@@ -2,20 +2,17 @@ import settings
 from maze.mice import BFSMouse
 from maze.mice import SmartMouse
 from maze.cheese import Cheese
-from maze.tiles import Room_tile
-from maze.tiles import Wall_tile
 from maze.tiles import Tile
 from maze.tiles import Missing_tile
 from maze.generator import gen
 
-maze = dict()
-sets = dict()
-mice = []
+maze: dict[tuple[int, int], Tile] = dict()
+mice: list[SmartMouse] = []
 cheese = None
 
 
 # Рисуем все: и тайлы и мышей
-def draw(x1, y1, x2, y2):
+def draw(x1: float, y1: float, x2: float, y2: float):
     x1, y1 = int(x1) - settings.MARGIN, int(y1) - settings.MARGIN
     x2, y2 = int(x2) + settings.MARGIN, int(y2) + settings.MARGIN
     gen(x1, y1, x2 + 1, y2 + 1)

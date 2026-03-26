@@ -5,6 +5,7 @@ map_file = "map.txt"
 MAX_MOUSE_SPEED = 3
 MIN_MOUSE_SPEED = .3
 MARGIN = 5
+CHEESE_RANGE = 5
 CAM_SPEED = .5
 
 
