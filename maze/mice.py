@@ -13,7 +13,7 @@ import settings
 
 
 class Mouse(ABC):
-    def __init__(self, x: float, y: float, dir: int = 0) -> None:
+    def __init__(self, x: float, y: float, dir: int = 0):
         self.x: float = x
         self.y: float = y
         self.size: float = 1 / 4 # доля тайла, тайлы 1x1
@@ -26,12 +26,12 @@ class Mouse(ABC):
         return Maze.get_tile(self.x, self.y)
 
 
-    def draw(self) -> None:
+    def draw(self):
         graphics.draw_circle("yellow", self.x, self.y, self.size)
 
 
     @abstractmethod
-    def update(self, delta_time: float) -> None:
+    def update(self, delta_time: float):
         # Ничего не умеет вообще
         pass
 
@@ -44,7 +44,7 @@ class SmartMouse(Mouse, ABC):
         self.next: Tile = self.cur_tile
 
 
-    def update(self, delta_time: float) -> None:
+    def update(self, delta_time: float):
         if self.path is None or self.target is None:
             return
         
@@ -66,11 +66,11 @@ class SmartMouse(Mouse, ABC):
     
 
     @abstractmethod
-    def find_path(self) -> None:
+    def find_path(self):
         pass
 
 
-    def goto_cheese(self, x_cheese: int, y_cheese: int) -> None:
+    def goto_cheese(self, x_cheese: int, y_cheese: int):
         self.target = (x_cheese, y_cheese)
         self.next = self.cur_tile
         self.find_path()
@@ -115,7 +115,7 @@ class DFSMouse(SmartMouse):
 
 
 class BFSMouse(SmartMouse):
-    def find_path(self) -> None:
+    def find_path(self):
         if self.target is None:
             return
         

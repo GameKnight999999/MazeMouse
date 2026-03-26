@@ -6,7 +6,7 @@ import random
 
 
 class Set:
-    def __init__(self) -> None:
+    def __init__(self):
         self.next = self
     
 
@@ -23,6 +23,10 @@ class Set:
         if self.next is self and value.next is value:
             return False
         return self.next == value.next
+    
+
+    def __ne__(self, value: object) -> bool:
+        return not self == value
 
 
 def cell2wall(x: int):
@@ -75,8 +79,6 @@ def gen(x1: int, y1: int, x2: int, y2: int):
     for wall in walls:
         column = (wall2cell(wall[0][0]) + wall2cell(wall[1][0])) // 2
         row = (wall2cell(wall[0][1]) + wall2cell(wall[1][1])) // 2
-        if (column % 2) ^ (row % 2):
-            print(column, row)
         if sets[wall[0]] != sets[wall[1]]:
             Maze.maze[(column, row)] = Room_tile(row, column)
             _ = sets[wall[0]] + sets[wall[1]]
