@@ -1,0 +1,31 @@
+digraph "classes" {
+rankdir=BT
+charset="utf-8"
+"MazeMouse.maze.mice.BFSMouse" [color="black", fontcolor="black", label=<{BFSMouse||find_path()<br ALIGN="LEFT"/>}>, shape="record", style="solid"];
+"MazeMouse.maze.cheese.Cheese" [color="black", fontcolor="black", label=<{Cheese|size : float<br ALIGN="LEFT"/>x : float<br ALIGN="LEFT"/>y : float<br ALIGN="LEFT"/>|draw()<br ALIGN="LEFT"/>}>, shape="record", style="solid"];
+"MazeMouse.maze.mice.DFSMouse" [color="black", fontcolor="black", label=<{DFSMouse||find_path()<br ALIGN="LEFT"/>}>, shape="record", style="solid"];
+"MazeMouse.maze.tiles.Missing_tile" [color="black", fontcolor="black", label=<{Missing_tile|image : Surface<br ALIGN="LEFT"/>|draw()<br ALIGN="LEFT"/>}>, shape="record", style="solid"];
+"MazeMouse.maze.mice.Mouse" [color="black", fontcolor="black", label=<{<I>Mouse</I>|cur_tile : Tile<br ALIGN="LEFT"/>dir : int<br ALIGN="LEFT"/>size : float<br ALIGN="LEFT"/>speed : float<br ALIGN="LEFT"/>x : float<br ALIGN="LEFT"/>y : float<br ALIGN="LEFT"/>|draw()<br ALIGN="LEFT"/><I>update</I>(delta_time: float)<br ALIGN="LEFT"/>}>, shape="record", style="solid"];
+"MazeMouse.maze.mice.Mouse2" [color="black", fontcolor="black", label=<{Mouse2||update(delta_time: float)<br ALIGN="LEFT"/>}>, shape="record", style="solid"];
+"MazeMouse.maze.tiles.Room_tile" [color="black", fontcolor="black", label=<{Room_tile|<br ALIGN="LEFT"/>|}>, shape="record", style="solid"];
+"MazeMouse.maze.generator.Set" [color="black", fontcolor="black", label=<{Set|next : Set<br ALIGN="LEFT"/>top : Set<br ALIGN="LEFT"/>|operator+(other: Set) : Set<br ALIGN="LEFT"/>operator==(value: Set) : bool<br ALIGN="LEFT"/>operator!=(value: Set) : bool}>, shape="record", style="solid"];
+"MazeMouse.maze.mice.SmartMouse" [color="black", fontcolor="black", label=<{<I>SmartMouse</I>|path : Iterator[int] \| None<br ALIGN="LEFT"/>prev : Tile \| None<br ALIGN="LEFT"/>preview : list[int]<br ALIGN="LEFT"/>target : tuple[int, int] \| None<br ALIGN="LEFT"/>|draw()<br ALIGN="LEFT"/><I>find_path</I>()<br ALIGN="LEFT"/>goto_cheese(x_cheese: int, y_cheese: int)<br ALIGN="LEFT"/>update(delta_time: float)<br ALIGN="LEFT"/>}>, shape="record", style="solid"];
+"MazeMouse.maze.tiles.Tile" [color="black", fontcolor="black", label=<{<I>Tile</I>|column : int<br ALIGN="LEFT"/>row : int<br ALIGN="LEFT"/>tile_type : str<br ALIGN="LEFT"/>|dist_to_border(x: float, y: float, dir_n: int) : float<br ALIGN="LEFT"/><I>draw</I>()<br ALIGN="LEFT"/>get_neighb_tile(dir_n: int) : Tile<br ALIGN="LEFT"/>}>, shape="record", style="solid"];
+"MazeMouse.maze.tiles.Wall_tile" [color="black", fontcolor="black", label=<{Wall_tile|image : Surface<br ALIGN="LEFT"/>|draw()<br ALIGN="LEFT"/>}>, shape="record", style="solid"];
+"MazeMouse.maze.Maze" [color="black", fontcolor="black", label=<{Maze|maze : dict[tuple[int, int], Tile]<br ALIGN="LEFT"/>mice : list[Mouse]<br ALIGN="LEFT"/>cheese : Cheese \| None<br ALIGN="LEFT"/>|draw()<br ALIGN="LEFT"/>get_tile(x: float, y: float) : Tile<br ALIGN="LEFT"/>update(delta_time: float)<br ALIGN="LEFT"/>add_mouse(x: float, y: float)<br ALIGN="LEFT"/>put_cheese(x: float, y: float)<br ALIGN="LEFT"/>}>, shape="record", style="solid"];
+"MazeMouse.maze.generator" [color="black", fontcolor="black", label=<{generator|sets : dict[Cell, Set]<br ALIGN="LEFT"/>|cell2wall(x: int)<br ALIGN="LEFT"/>wall2cell(x: int)<br ALIGN="LEFT"/>gen_cells(x1: int, y1: int, x2: int, y2: int)<br ALIGN="LEFT"/>gen_walls(cells: list[Cell])<br ALIGN="LEFT"/>gen(x1: int, y1: int, x2: int, y2: int)<br ALIGN="LEFT"/>}>, shape="record", style="solid"];
+"MazeMouse.maze.mice.BFSMouse" -> "MazeMouse.maze.mice.SmartMouse" [arrowhead="empty", arrowtail="none"];
+"MazeMouse.maze.mice.DFSMouse" -> "MazeMouse.maze.mice.SmartMouse" [arrowhead="empty", arrowtail="none"];
+"MazeMouse.maze.mice.Mouse2" -> "MazeMouse.maze.mice.Mouse" [arrowhead="empty", arrowtail="none"];
+"MazeMouse.maze.mice.SmartMouse" -> "MazeMouse.maze.mice.Mouse" [arrowhead="empty", arrowtail="none"];
+"MazeMouse.maze.tiles.Missing_tile" -> "MazeMouse.maze.tiles.Tile" [arrowhead="empty", arrowtail="none"];
+"MazeMouse.maze.tiles.Room_tile" -> "MazeMouse.maze.tiles.Tile" [arrowhead="empty", arrowtail="none"];
+"MazeMouse.maze.tiles.Wall_tile" -> "MazeMouse.maze.tiles.Tile" [arrowhead="empty", arrowtail="none"];
+"MazeMouse.maze.generator" -> "MazeMouse.maze.tiles.Tile" [arrowhead="open", arrowtail="none"];
+"MazeMouse.maze.Maze" -> "MazeMouse.maze.generator" [arrowhead="open", arrowtail="none"];
+"MazeMouse.maze.generator" -> "MazeMouse.maze.generator.Set" [arrowhead="open", arrowtail="none"];
+"MazeMouse.maze.Maze" -> "MazeMouse.maze.cheese.Cheese" [arrowhead="open", arrowtail="none"];
+"MazeMouse.maze.Maze" -> "MazeMouse.maze.mice.SmartMouse" [arrowhead="open", arrowtail="none"];
+"MazeMouse.maze.Maze" -> "MazeMouse.maze.mice.Mouse" [arrowhead="open", arrowtail="none"];
+"MazeMouse.maze.Maze" -> "MazeMouse.maze.tiles.Tile" [arrowhead="open", arrowtail="none"];
+}
