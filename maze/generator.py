@@ -11,9 +11,10 @@ Cell = tuple[int, int]
 class Set:
     @property
     def top(self) -> "Set":
-        if self.next is self:
-            return self
-        return self.next.top
+        top_set = self
+        while top_set.next is not top_set:
+            top_set = top_set.next
+        return top_set
 
 
     def __init__(self):
