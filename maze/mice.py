@@ -16,7 +16,7 @@ class Mouse(ABC):
     def __init__(self, x: float, y: float, dir: int = 0):
         self.x: float = x
         self.y: float = y
-        self.size: float = 1 / 4 # доля тайла, тайлы 1x1
+        self.size: float = 1 / 4
         self.speed: float = settings.MIN_MOUSE_SPEED + random.random() * (settings.MAX_MOUSE_SPEED - settings.MIN_MOUSE_SPEED) # тайлов в секунду
         self.dir: int = dir
     
@@ -96,8 +96,6 @@ class SmartMouse(Mouse, ABC):
                 cur_tile = next_tile
 
 
-
-# немного интеллекта
 class Mouse2(Mouse):
     def update(self, delta_time: float):
         dx, dy = directions[self.dir]

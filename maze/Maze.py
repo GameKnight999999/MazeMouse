@@ -15,7 +15,6 @@ mice: list[Mouse] = []
 cheese = None
 
 
-# Рисуем все: и тайлы и мышей
 def draw(x1: float, y1: float, x2: float, y2: float):
     x1, y1 = floor(x1) - settings.MARGIN, floor(y1) - settings.MARGIN
     x2, y2 = floor(x2) + settings.MARGIN, floor(y2) + settings.MARGIN
@@ -32,13 +31,10 @@ def draw(x1: float, y1: float, x2: float, y2: float):
         cheese.draw()
 
 
-# Получаем тайл по координатам лабиринта
 def get_tile(x: float, y: float):
     return maze.get((floor(x), floor(y)), Missing_tile(int(y), int(x)))
 
 
-# двигаем, все что движется
-# вызов этой функции постоянно в цикле в main.py
 def update(delta_time: float):
     for mouse in mice:
         mouse.update(delta_time)
