@@ -17,7 +17,7 @@ class Mouse(ABC):
         self.x: float = x
         self.y: float = y
         self.size: float = 1 / 4 # доля тайла, тайлы 1x1
-        self.speed: float = settings.MIN_MOUSE_SPEED + random.random() * (settings.MAX_MOUSE_SPEED * settings.MIN_MOUSE_SPEED) # тайлов в секунду
+        self.speed: float = settings.MIN_MOUSE_SPEED + random.random() * (settings.MAX_MOUSE_SPEED - settings.MIN_MOUSE_SPEED) # тайлов в секунду
         self.dir: int = dir
     
 
@@ -41,14 +41,15 @@ class SmartMouse(Mouse, ABC):
         super().__init__(x, y, dir)
         self.target: tuple[int, int] | None = None
         self.path: Iterator[int] | None = None
-        self.next: Tile = self.cur_tile
+        self.prev: Tile | None = None
+        self.preview: list[int] = []
 
 
     def update(self, delta_time: float):
         if self.path is None or self.target is None:
             return
         
-        if self.cur_tile == self.next and self.cur_tile.dist_to_border(self.x, self.y, self.dir) < 0.5:
+        if self.cur_tile != self.prev and self.cur_tile.dist_to_border(self.x, self.y, self.dir) < 0.5:
             if self.cur_tile.column == self.target[0] and self.cur_tile.row == self.target[1]:
                 self.path = None
                 new_cheese = None
@@ -58,7 +59,9 @@ class SmartMouse(Mouse, ABC):
                 Maze.put_cheese(*new_cheese)
             else:
                 self.dir = next(self.path, self.dir)
-                self.next = self.cur_tile.get_neighb_tile(self.dir)
+                self.prev = self.cur_tile
+                if self.preview:
+                    self.preview.pop(0)
         
         dx, dy = directions[self.dir]
         self.x += dx * self.speed * delta_time
@@ -72,8 +75,26 @@ class SmartMouse(Mouse, ABC):
 
     def goto_cheese(self, x_cheese: int, y_cheese: int):
         self.target = (x_cheese, y_cheese)
-        self.next = self.cur_tile
+        self.prev = None
         self.find_path()
+    
+
+    def draw(self):
+        super().draw()
+        if settings.debug:
+            if self.prev is not None:
+                graphics.draw_line("red", self.prev.column, self.prev.row, self.prev.column + 1, self.prev.row)
+                graphics.draw_line("red", self.prev.column, self.prev.row, self.prev.column, self.prev.row + 1)
+                graphics.draw_line("red", self.prev.column + 1, self.prev.row, self.prev.column + 1, self.prev.row + 1)
+                graphics.draw_line("red", self.prev.column, self.prev.row + 1, self.prev.column + 1, self.prev.row + 1)
+            cur_tile = self.cur_tile
+            if cur_tile.dist_to_border(self.x, self.y, self.dir) < 0.5:
+                cur_tile = cur_tile.get_neighb_tile(self.dir)
+            for dir in self.preview:
+                next_tile = cur_tile.get_neighb_tile(dir)
+                graphics.draw_line("green", cur_tile.column + .5, cur_tile.row + .5, next_tile.column + .5, next_tile.row + .5)
+                cur_tile = next_tile
+
 
 
 # немного интеллекта
@@ -128,6 +149,7 @@ class BFSMouse(SmartMouse):
 
             if tile.column == self.target[0] and tile.row == self.target[1]:
                 self.path = iter(path)
+                self.preview = path.copy()
                 return
             
             for dir in range(len(directions)):

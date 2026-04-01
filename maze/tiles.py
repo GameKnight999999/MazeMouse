@@ -13,7 +13,7 @@ class Tile(ABC):
     def draw(self):
        pass
 
-    def get_neighb_tile(self, dir_n: int) -> "Tile":
+    def get_neighb_tile(self, dir_n: int):
         dx, dy = directions[dir_n]
         return Maze.get_tile(self.column + 0.5 + dx, self.row + 0.5 + dy)
 

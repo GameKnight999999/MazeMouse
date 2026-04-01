@@ -14,10 +14,17 @@ while running:
         if event.type == events.QUIT:
            running = False
         
+        elif event.type == events.KEYDOWN:
+            if event.key == events.K_F3:
+                settings.debug = not settings.debug
+        
         elif event.type == events.MOUSEBUTTONDOWN:
             if event.button == 1:
                 move = False
                 mouse_pressed = True
+                if settings.debug:
+                    tile = Maze.get_tile(*graphics.screen2mazep(*event.pos))
+                    print(tile.column, tile.row)
             elif event.button == 3:
                 Maze.put_cheese(*graphics.screen2mazep(*event.pos))
         

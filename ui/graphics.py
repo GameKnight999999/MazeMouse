@@ -30,6 +30,12 @@ def draw_circle(color: Color, x: float, y: float, r: float):
     pygame.draw.circle(screen, color, (x, y), r * settings.tile_size)
 
 
+def draw_line(color: Color, x1: float, y1: float, x2: float, y2: float):
+    x1, y1 = maze2screenp(x1, y1)
+    x2, y2 = maze2screenp(x2, y2)
+    pygame.draw.line(screen, color, (x1, y1), (x2, y2))
+
+
 def screen2mazep(x: float, y: float):
     return x / settings.tile_size - settings.view_left_top[0], \
            y / settings.tile_size - settings.view_left_top[1]
