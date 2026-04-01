@@ -18,8 +18,6 @@ while running:
             if event.button == 1:
                 move = False
                 mouse_pressed = True
-                tile = Maze.get_tile(*graphics.screen2mazep(*event.pos))
-                print(tile.column, tile.row)
             elif event.button == 3:
                 Maze.put_cheese(*graphics.screen2mazep(*event.pos))
         
