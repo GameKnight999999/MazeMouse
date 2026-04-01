@@ -2,13 +2,16 @@ import settings
 from math import floor
 from maze.mice import BFSMouse
 from maze.mice import SmartMouse
+from maze.mice import Mouse
+from maze.mice import Mouse2
 from maze.cheese import Cheese
 from maze.tiles import Tile
 from maze.tiles import Missing_tile
 from maze.generator import gen
+import random
 
 maze: dict[tuple[int, int], Tile] = dict()
-mice: list[SmartMouse] = []
+mice: list[Mouse] = []
 cheese = None
 
 
@@ -43,6 +46,8 @@ def update(delta_time: float):
 
 def add_mouse(x: float, y: float):
     global mice
+    if random.random() < .2:
+        mice.append(Mouse2(x, y))
     mice.append(BFSMouse(x, y))
 
 
@@ -51,4 +56,5 @@ def put_cheese(x: float, y: float):
     x, y = floor(x), floor(y)
     cheese = Cheese(x, y)
     for mouse in mice:
-        mouse.goto_cheese(x, y)
+        if isinstance(mouse, SmartMouse):
+            mouse.goto_cheese(x, y)

@@ -106,7 +106,7 @@ class Mouse2(Mouse):
         next_tile = self.cur_tile.get_neighb_tile(self.dir)
         if self.cur_tile.dist_to_border(self.x, self.y, self.dir) < 0.2 and \
                 isinstance(next_tile, Wall_tile):
-            self.dir = (self.dir - 1) % 4
+            self.dir = random.randrange(len(directions))
 
 
 class DFSMouse(SmartMouse):
