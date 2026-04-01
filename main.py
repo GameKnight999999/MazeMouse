@@ -3,7 +3,6 @@ from maze import Maze
 from ui import events
 from ui import graphics
 
-FPS = 60
 running = True
 clock = events.Clock()
 move = False
@@ -55,6 +54,6 @@ while running:
     # рисуем лабиринт
     Maze.draw(*graphics.screen2mazep(0, 0), *graphics.screen2mazep(*graphics.screen.get_size()))
     graphics.flip()
-    clock.tick(FPS)
+    dt = clock.tick() / 1000
     # обновляем весь лабиринт
-    Maze.update(1 / FPS)
+    Maze.update(dt)

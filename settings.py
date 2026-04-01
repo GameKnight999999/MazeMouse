@@ -1,5 +1,5 @@
 tile_size = 100
-view_left_top = [0.0, 0.0]
+view_left_top = [-1e10, -1e10]
 map_file = "map.txt"
 
 debug = False
