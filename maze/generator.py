@@ -8,6 +8,10 @@ Cell = tuple[int, int]
 
 
 class Set:
+
+    uid = 1
+
+
     @property
     def top(self) -> "Set":
         if self.next is self:
@@ -17,6 +21,12 @@ class Set:
 
     def __init__(self):
         self.next = self
+        self.uid = self.uid
+        Set.uid += 1
+    
+
+    def __hash__(self) -> int:
+        return hash(self.top.uid)
     
 
     def __add__(self, other: "Set"):
