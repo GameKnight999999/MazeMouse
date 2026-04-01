@@ -40,6 +40,7 @@ while running:
             pos = graphics.screen2mazep(*mouse_pos)
 
             settings.tile_size *= 1 + .1 * event.y
+            settings.tile_size = max(min(settings.tile_size, settings.MAX_TILE_SIZE), settings.MIN_TILE_SIZE)
             
             pos_new = graphics.screen2mazep(*mouse_pos)
             settings.view_left_top[0] += pos_new[0] - pos[0]
