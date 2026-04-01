@@ -8,12 +8,19 @@ Cell = tuple[int, int]
 
 
 class Set:
+    @property
+    def top(self) -> "Set":
+        if self.next is self:
+            return self
+        return self.next.top
+
+
     def __init__(self):
         self.next = self
     
 
     def __add__(self, other: "Set"):
-        self.next = other
+        self.top.next = other
         return other
     
 
@@ -21,11 +28,7 @@ class Set:
         if not isinstance(value, Set):
             return False
         
-        if self is value:
-            return True
-        if self.next is self and value.next is value:
-            return False
-        return self.next == value.next
+        return self.top is value.top
     
 
     def __ne__(self, value: object) -> bool:
