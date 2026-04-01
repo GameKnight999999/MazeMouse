@@ -52,14 +52,16 @@ def gen_cells(x1: int, y1: int, x2: int, y2: int):
 
 def gen_walls(cells: list[tuple[int, int]]):
     
-    walls: set[tuple[tuple[int, int], tuple[int, int]]] = set()
+    walls: list[tuple[tuple[int, int], tuple[int, int]]] = []
 
     for cell in cells:
         for dir in directions:
             if (cell[0] + dir[0], cell[1] + dir[1]) in sets:
-                walls.add((cell, (cell[0] + dir[0], cell[1] + dir[1])))
+                wall = (cell, (cell[0] + dir[0], cell[1] + dir[1]))
+                if wall not in walls and wall[::-1] not in walls:
+                    walls.append(wall)
     
-    return list(walls)
+    return walls
 
 
 def gen(x1: int, y1: int, x2: int, y2: int):
