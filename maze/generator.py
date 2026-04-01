@@ -5,6 +5,9 @@ from maze.directions import directions
 import random
 
 
+Cell = tuple[int, int]
+
+
 class Set:
     def __init__(self):
         self.next = self
@@ -39,7 +42,7 @@ def wall2cell(x: int):
 
 def gen_cells(x1: int, y1: int, x2: int, y2: int):
     
-    cells: list[tuple[int, int]] = []
+    cells: list[Cell] = []
 
     for column in range(x1, x2):
         for row in range(y1, y2):
@@ -50,9 +53,9 @@ def gen_cells(x1: int, y1: int, x2: int, y2: int):
     return cells
 
 
-def gen_walls(cells: list[tuple[int, int]]):
+def gen_walls(cells: list[Cell]):
     
-    walls: list[tuple[tuple[int, int], tuple[int, int]]] = []
+    walls: list[tuple[Cell, Cell]] = []
 
     for cell in cells:
         for dir in directions:
@@ -88,4 +91,4 @@ def gen(x1: int, y1: int, x2: int, y2: int):
             Maze.maze[(column, row)] = Wall_tile(row, column)
 
 
-sets: dict[tuple[int, int], Set] = dict()
+sets: dict[Cell, Set] = dict()
